@@ -10,4 +10,4 @@ def index():
 def index2():
     return render_template("index2.html")
 
-api.run(host="127.0.0.1",port=8085)
+api.run(host="0.0.0.0",port=8085)
