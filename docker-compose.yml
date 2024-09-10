@@ -21,7 +21,7 @@ services:
       depends_on:
         - mongo
 volumes:
-  localdatabase
+  localdatabase:
 networks:
   composenetwork:
-    driver:bridge
+    driver: bridge
