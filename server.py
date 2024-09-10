@@ -6,7 +6,7 @@ api = Flask(__name__)
 def index():
     return render_template("index.html")
 
-@api.route('a', methods = ['GET'])
+@api.route('/a', methods = ['GET'])
 def index2():
     return render_template("index2.html")
 
