@@ -7,7 +7,7 @@ utenti = [['mario', 'password01', 'M'], ['gianni', 'password02', 'M'], ['Anita',
 
 @api.route('/loggati', methods = ['GET'])
 def loggati():
-    return ' Ciao Buongiorno'
+    return render_template('index2.html')
 
 @api.route('/', methods=['GET'])
 def index():
