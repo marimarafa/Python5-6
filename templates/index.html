@@ -4,24 +4,85 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrazione</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+
+        .form-container {
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        input[type="submit"] {
+            margin-top: 10px;
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        label {
+            margin-top: 10px;
+            display: block;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .genere {
+            display: flex;
+            align-items: center;
+            gap: 10px; 
+        }
+    </style>
 </head>
 <body>
-    <h1>Accedi</h1>
-    <form action="/registrati" method="GET">
-        <label for="nome"><b>Nome</b></label>
-        <input type="text" placeholder="Inserisci nome" name="nome" id="nome" required><br>
+    <div class="form-container">
+        <h1>Accedi</h1>
+        <form action="/registrati" method="GET">
+            <label for="nome"><b>Nome</b></label>
+            <input type="text" placeholder="Inserisci nome" name="nome" id="nome" required><br>
 
-        <label for="password"><b>Password</b></label>
-        <input type="password" placeholder="Inserisci password" name="password" id="password" required><br>
+            <label for="password"><b>Password</b></label>
+            <input type="password" placeholder="Inserisci password" name="password" id="password" required><br>
 
-        <label for="genere"><b>Genere</b></label><br>
-        <input type="radio" id="maschio" name="genere" value="M" required>
-        <label for="maschio">M</label><br>
+            <label for="genere"><b>Genere</b></label><br>
+            <div class="genere">
+                <input type="radio" id="maschio" name="genere" value="M" required>
+                <label for="maschio">M</label>
 
-        <input type="radio" id="femmina" name="genere" value="F" required>
-        <label for="femmina">F</label><br>
+                <input type="radio" id="femmina" name="genere" value="F" required>
+                <label for="femmina">F</label>
+            </div>
 
-        <input type="submit" value="Registrati">
-    </form>
+            <input type="submit" value="Registrati">
+            <input type="submit" value="Sei già registrato?">
+        </form>
+    </div>
 </body>
 </html>

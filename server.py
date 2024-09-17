@@ -5,6 +5,10 @@ api = Flask(__name__)
 # Lista utenti con nome, password, genere e altro
 utenti = [['mario', 'password01', 'M'], ['gianni', 'password02', 'M'], ['Anita', 'password03', 'F']]
 
+@api.route('/loggati', methods = ['GET'])
+def loggati():
+    return ' Ciao Buongiorno'
+
 @api.route('/', methods=['GET'])
 def index():
     return render_template("index.html")
