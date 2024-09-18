@@ -34,23 +34,31 @@ def registra():
                 return render_template('index2.html') #utente gia registrato
             
         # Se non trova l'utente, reindirizza a "accesso negato"
-        return render_template('reg_ko.html')
+    return render_template('reg_ko.html')
 
 @api.route('/loggati', methods=['GET'])
 def loggati():
     nome = request.args.get("nome")
     password = request.args.get("password")
     genere = request.args.get("genere")
-    utente = [nome, password,genere, '1']
+    utente = [nome, password, '1']
 
     if utente in utenti:
-        if (utente[0].lower() == nome.lower()) and (utente[1] == password) and (utente[2] == genere):
+        if (utente[0].lower() == nome.lower()) and (utente[1] == password):
             if utente[3] == '1':
-                return f'Ciao {nome} . Sei {genere}' # Accesso riuscito
+                return f'Ciao {nome} . Sei {genere}'+ render_template('log_ok.html') # Accesso riuscito
             else:
                 return render_template('log_ko.html') #utente non registrato
             
     return render_template('index.html')
+@api.route('/logok', methods=['GET'])
+def logok():
+    return render_template("log_ok.html")
+
+@api.route('/logko', methods=['GET'])
+def logko():
+    return render_template("log_ko.html")
+
 
 if __name__ == '__main__':
     api.run(host="0.0.0.0", port=8085)
