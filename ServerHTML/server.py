@@ -30,11 +30,11 @@ def registra():
         if (utente[0].lower() == nome.lower()) and (utente[1] == password) and (utente[2] == genere):
             if utente[3] == '0':
                 return render_template('reg_ok.html')  # Accesso riuscito
-            else:
+            elif utente[3] == '1':
                 return render_template('index2.html') #utente gia registrato
             
-    # Se non trova l'utente, reindirizza a "accesso negato"
-    return render_template('reg_ko.html')
+        # Se non trova l'utente, reindirizza a "accesso negato"
+        return render_template('reg_ko.html')
 
 @api.route('/loggati', methods=['GET'])
 def loggati():
