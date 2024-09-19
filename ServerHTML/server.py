@@ -3,7 +3,7 @@ from flask import Flask,render_template, request
 api = Flask(__name__)
 
 # Lista utenti con nome, password, genere e altro
-utenti = [['mario', 'password01', 'M'], ['gianni', 'password02', 'M'], ['Anita', 'password03', 'F']]
+utenti = [['mario', 'password01', 'M', '0'], ['gianni', 'password02', 'M', '0'], ['Anita', 'password03', 'F', '0']]
 
 @api.route('/', methods=['GET'])
 def index():
@@ -31,16 +31,12 @@ def registra():
 
      # Controlla se l'utente esiste e i dati corrispondono
     if utente in utenti:
-        if (utente[0].lower() == nome.lower()) and (utente[1] == password) and (utente[2] == genere):
-            if utente[3] == '1':
-                return render_template('index2.html')  #utente gia registrato
-            elif utente[3] == '0':
-                return render_template('reg_ko.html') # Accesso riuscito
+        ind: int = utenti.index(utente)
+        utenti[ind][3] = "1"  
+        return render_template('reg_ok.html') # Accesso riuscito 
+    else:
+        return render_template('reg_ko.html')  #utente gia registrato
             
-    utente[3] = "1"      
-    utenti.append(utente) 
-    print(utenti)
-    return render_template('reg_ko.html')  
      
 
 @api.route('/loggati', methods=['GET'])
@@ -48,14 +44,13 @@ def loggati():
     nome = request.args.get("nome")
     password = request.args.get("password")
     genere = request.args.get("genere")
-    utente = [nome, password,genere, '1']
+    utente = [nome, password, genere, '1']
 
     if utente in utenti:
-        if (utente[0].lower() == nome.lower()) and (utente[1] == password) and (utente[2] == genere):
-                if utente[3] == '1':
-                    return render_template('log_ok.html') +f'CIAO {nome.capitalize()}' # Accesso riuscito
-
-    return render_template('log_ko.html') #utente non registrato
+        
+        return render_template('log_ok.html') +f'CIAO {nome.capitalize()}, SEI {genere}' # Accesso riuscito
+    else:
+        return render_template('log_ko.html') #utente non registrato
  
 @api.route('/logok', methods=['GET'])
 def logok():
