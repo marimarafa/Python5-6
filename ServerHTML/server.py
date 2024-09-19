@@ -17,18 +17,19 @@ def regok():
 def regko():
     return render_template("reg_ko.html")
 
+@api.route('/login', methods=['GET'])
+def login():
+    return render_template("index2.html")
+
 # Modifica: accettare il metodo POST per il form
 @api.route('/registrati', methods=['GET'])
 def registra():
     nome = request.args.get("nome")
     password = request.args.get("password")
     genere = request.args.get("genere")
-    logIn = request.args.get("logIn")
     utente = [nome, password,genere, '0']
 
-    if logIn:
-        return render_template('index2.html')
-    # Controlla se l'utente esiste e i dati corrispondono
+     # Controlla se l'utente esiste e i dati corrispondono
     if utente in utenti:
         if (utente[0].lower() == nome.lower()) and (utente[1] == password) and (utente[2] == genere):
             if utente[3] == '0':
@@ -44,17 +45,14 @@ def loggati():
     nome = request.args.get("nome")
     password = request.args.get("password")
     genere = request.args.get("genere")
-    utente = [nome, password, '1']
+    utente = [nome, password,genere, '1']
 
     if utente in utenti:
         if (utente[0].lower() == nome.lower()) and (utente[1] == password):
             if utente[3] == '1':
                 return render_template('log_ok.html')+ f'Ciao {nome} . Sei {genere}' # Accesso riuscito
-            else:
-                return render_template('log_ko.html') #utente non registrato
             
-            
-    return render_template('index.html')  # registrare l'utente 
+    return render_template('log_ko.html') #utente non registrato
  
 @api.route('/logok', methods=['GET'])
 def logok():
