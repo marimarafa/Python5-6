@@ -52,7 +52,7 @@ def loggati():
                     return render_template('log_ko.html')  # Utente non registrato
 
         return render_template('log_ko.html')  # Credenziali errate
-    return render_template('login.html')  # Mostra il form di login
+    return render_template('index2.html')  # Mostra il form di login
 
 @api.route('/logok', methods=['GET'])
 def logok():

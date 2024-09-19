@@ -23,18 +23,21 @@ def registra():
     nome = request.args.get("nome")
     password = request.args.get("password")
     genere = request.args.get("genere")
+    logIn = request.args.get("logIn")
     utente = [nome, password,genere, '0']
 
+    if logIn:
+        return render_template('index2.html')
     # Controlla se l'utente esiste e i dati corrispondono
     if utente in utenti:
         if (utente[0].lower() == nome.lower()) and (utente[1] == password) and (utente[2] == genere):
             if utente[3] == '0':
                 return render_template('reg_ok.html')  # Accesso riuscito
             elif utente[3] == '1':
-                return render_template('index2.html') #utente gia registrato
-            
-        # Se non trova l'utente, reindirizza a "accesso negato"
-    return render_template('reg_ko.html')
+                return render_template('index2.html') #utente gia registrato  
+        return render_template('reg_ko.html')        
+    # Se non trova l'utente, reindirizza a "accesso negato"
+    utenti.append(utente) 
 
 @api.route('/loggati', methods=['GET'])
 def loggati():
@@ -46,11 +49,13 @@ def loggati():
     if utente in utenti:
         if (utente[0].lower() == nome.lower()) and (utente[1] == password):
             if utente[3] == '1':
-                return f'Ciao {nome} . Sei {genere}'+ render_template('log_ok.html') # Accesso riuscito
+                return render_template('log_ok.html')+ f'Ciao {nome} . Sei {genere}' # Accesso riuscito
             else:
                 return render_template('log_ko.html') #utente non registrato
             
-    return render_template('index.html')
+            
+    return render_template('index.html')  # registrare l'utente 
+ 
 @api.route('/logok', methods=['GET'])
 def logok():
     return render_template("log_ok.html")
