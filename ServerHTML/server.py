@@ -3,7 +3,7 @@ from flask import Flask,render_template, request
 api = Flask(__name__)
 
 # Lista utenti con nome, password, genere e altro
-utenti = [['mario', 'password01', 'M', '0'], ['gianni', 'password02', 'M','0'], ['Anita', 'password03', 'F','0']]
+utenti = [['mario', 'password01', 'M'], ['gianni', 'password02', 'M'], ['Anita', 'password03', 'F']]
 
 @api.route('/', methods=['GET'])
 def index():
@@ -32,13 +32,16 @@ def registra():
      # Controlla se l'utente esiste e i dati corrispondono
     if utente in utenti:
         if (utente[0].lower() == nome.lower()) and (utente[1] == password) and (utente[2] == genere):
-            if utente[3] == '0':
-                return render_template('reg_ok.html')  # Accesso riuscito
-            elif utente[3] == '1':
-                return render_template('index2.html') #utente gia registrato  
-        return render_template('reg_ko.html')        
-    # Se non trova l'utente, reindirizza a "accesso negato"
+            if utente[3] == '1':
+                return render_template('index2.html')  #utente gia registrato
+            elif utente[3] == '0':
+                return render_template('reg_ko.html') # Accesso riuscito
+            
+    utente[3] = "1"      
     utenti.append(utente) 
+    print(utenti)
+    return render_template('reg_ko.html')  
+     
 
 @api.route('/loggati', methods=['GET'])
 def loggati():
@@ -48,10 +51,10 @@ def loggati():
     utente = [nome, password,genere, '1']
 
     if utente in utenti:
-        if (utente[0].lower() == nome.lower()) and (utente[1] == password):
-            if utente[3] == '1':
-                return render_template('log_ok.html')+ f'Ciao {nome} . Sei {genere}' # Accesso riuscito
-            
+        if (utente[0].lower() == nome.lower()) and (utente[1] == password) and (utente[2] == genere):
+                if utente[3] == '1':
+                    return render_template('log_ok.html') +f'CIAO {nome.capitalize()}' # Accesso riuscito
+
     return render_template('log_ko.html') #utente non registrato
  
 @api.route('/logok', methods=['GET'])
