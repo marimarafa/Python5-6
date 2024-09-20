@@ -3,7 +3,7 @@ from flask import Flask,render_template, request
 api = Flask(__name__)
 
 # Lista utenti con nome, password, genere e altro
-utenti = [['mario', 'password01', 'M', '0'], ['gianni', 'password02', 'M', '0'], ['Anita', 'password03', 'F', '0']]
+utenti = [['mario', 'password01', 'Maschio', '0'], ['gianni', 'password02', 'Maschio', '0'], ['Anita', 'password03', 'Femmina', '0']]
 
 @api.route('/', methods=['GET'])
 def index():
@@ -43,15 +43,14 @@ def registra():
 def loggati():
     nome = request.args.get("nome")
     password = request.args.get("password")
-    genere = request.args.get("genere")
-    utente = [nome, password, genere, '1']
 
-    if utente in utenti:
-        
-        return render_template('log_ok.html') +f'CIAO {nome.capitalize()}, SEI {genere}' # Accesso riuscito
-    else:
-        return render_template('log_ko.html') #utente non registrato
- 
+    for utente in utenti:
+        if utente[0]==nome and utente[1]==password and utente[3]=="1":
+            genere = utente[2]
+            return render_template('log_ok.html') +f'CIAO {nome.capitalize()}, SEI UN {genere}' # Accesso riuscito
+    return render_template('log_ko.html') #utente non registrato
+
+
 @api.route('/logok', methods=['GET'])
 def logok():
     return render_template("log_ok.html")
