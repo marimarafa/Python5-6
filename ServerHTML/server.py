@@ -6,7 +6,11 @@ api = Flask(__name__)
 utenti = [['mario', 'password01', 'Maschio', '0'], ['gianni', 'password02', 'Maschio', '0'], ['Anita', 'password03', 'Femmina', '0']]
 
 @api.route('/', methods=['GET'])
-def index():
+def pagina1():
+    return render_template("pagina1.html")
+
+@api.route('/registra', methods=['GET'])
+def registra():
     return render_template("index.html")
 
 @api.route('/regok', methods=['GET'])
@@ -23,7 +27,7 @@ def login():
 
 # Modifica: accettare il metodo POST per il form
 @api.route('/registrati', methods=['GET'])
-def registra():
+def registrati():
     nome = request.args.get("nome")
     password = request.args.get("password")
     genere = request.args.get("genere")
@@ -47,7 +51,7 @@ def loggati():
     for utente in utenti:
         if utente[0]==nome and utente[1]==password and utente[3]=="1":
             genere = utente[2]
-            return render_template('log_ok.html') +f'CIAO {nome.capitalize()}, SEI UN {genere}' # Accesso riuscito
+            return render_template('log_ok.html') # Accesso riuscito
     return render_template('log_ko.html') #utente non registrato
 
 
@@ -58,6 +62,14 @@ def logok():
 @api.route('/logko', methods=['GET'])
 def logko():
     return render_template("log_ko.html")
+
+@api.route('/ordinipassati', methods=['GET'])
+def ordinipassati():
+    return render_template("ordini_passati.html")
+
+@api.route('/ordiniincorso', methods=['GET'])
+def ordiniincorso():
+    return render_template("ordini_in_corso.html")
 
 
 if __name__ == '__main__':
