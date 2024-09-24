@@ -26,7 +26,7 @@ mydict_2 = "{ 'brand':   'Ford'," + \
 "'year': 1964," + \
 "'colors': ['red', 'white', 'blue']}"
 
-# json.dump()
+#json.dump()
 # str1 = json.dumps(mydict_1)
 
 # json.load
@@ -48,7 +48,6 @@ def DeserializzaJson(file_path :str) -> dict:
     with open(file_path,"r") as file:
         dict1 = json.loads(file.read())
     return dict1
-
 
 print(DeserializzaJson("JASON/dict.json"))
 
