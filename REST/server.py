@@ -20,11 +20,9 @@ def GestisciAddCittadino():
     #controlla che il cittadino non è gia presente in anagrafe
     #rispondi
 
-
-
-
-
-
+@api.route('/', methods = ['GET'])
+def manageget():
+    return "Ciao a tutti"
 
 api.run(host = "127.0.0.1" , port = 8080)
 
