@@ -30,18 +30,23 @@ def GestisciAddCittadino():
     
 @api.route("/richiedi_dati",methods = ['POST'])
 def GestisciRichiestaDati():
+
     content_type = request.headers.get('Content-Type')
-    jRequest = request.json
+    
     if content_type == "application/json":
+
+        jRequest = request.json
         sCodiceFiscale = jRequest["codice fiscale"]
         dAnagrafe = JsonDeserialize(sFileAnagrafe)
+
         if sCodiceFiscale in dAnagrafe:
-            return dAnagrafe[sCodiceFiscale] 
+            info =  dAnagrafe[sCodiceFiscale] 
+        
+            jResponse = {"Error" : "000" , "Msg": "Ok", 'info': info}
+            return json.dumps(jResponse),200  #200 è il codice del http
         else:
             jResponse = {"Error" : "001" , "Msg": "codice fiscale non trovato"}
             return json.dumps(jResponse),200  
-
-
 
 
 

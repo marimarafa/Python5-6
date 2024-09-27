@@ -22,7 +22,7 @@ def RichiedidatiCittadino():
 
 def RichiediDati():  
     codFiscale = input("Inserisci codice fiscale ")
-    return codFiscale
+    return {"codice fiscale" :codFiscale}
 
 CreaInterfaccia()
 sOper = input ("\nSeleziona operazione ")
@@ -42,18 +42,18 @@ while (sOper != "5"):
  
     if sOper == "2":
         api_url = base_url + "/richiedi_dati"
-        jsonData = RichiediDati()
+        jsonDataRequest = RichiediDati()
         try:
             response = requests.post(api_url,json=jsonDataRequest)
             print(response.status_code)
             print(response.headers["Content-Type"])
             data1 = response.json()
+            info = data1.pop('info')
             print(data1)
+            print(info)
 
         except:
             print("\nProblemi di comunicazione con il server.. \tRIPROVA PIU TARDI.")
-
-
 
 
     CreaInterfaccia()
