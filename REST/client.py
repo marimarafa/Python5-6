@@ -17,7 +17,7 @@ def RichiedidatiCittadino():
     cognome = input("Inserisci cognome cittadino: ")
     dataNascita = input("inserisci data nascita: ")
     codFiscale = input("Inserisci codice fiscale: ")
-    jRequest = {"nome": nome , "cognome" : cognome, "dataNascita": dataNascita,"codFiscale" :codFiscale}
+    jRequest = {"nome": nome , "cognome" : cognome, "data nascita": dataNascita,"codice fiscale" :codFiscale}
     return jRequest
 
 CreaInterfaccia()

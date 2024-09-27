@@ -11,9 +11,18 @@ def GestisciAddCittadino():
     print("Ricevuta chiamata " + content_type)
     if content_type == "application/json":
         jRequest = request.json
-        print(jRequest)
-        jResponse = {"Error" : "000" , "Msg": "Ok"}
-        return json.dumps(jResponse),200  #200 è il codice del http
+        sCodiceFiscale = jRequest["codice fiscale"]
+        print("Ricevuto " + sCodiceFiscale)
+        #carichiamo l'anagrafe
+        dAnagrafe = JsonDeserialize(sFileAnagrafe)
+        if sCodiceFiscale not in dAnagrafe:
+            dAnagrafe[sCodiceFiscale] = jRequest
+            JsonSerialize(dAnagrafe,sFileAnagrafe)
+            jResponse = {"Error" : "000" , "Msg": "Ok"}
+            return json.dumps(jResponse),200  #200 è il codice del http
+        else:
+            jResponse = {"Error" : "001" , "Msg": "codice fiscale già presente"}
+            return json.dumps(jResponse),200  
     else:
         return "Errore , formato non riconosciuto",401 
 
