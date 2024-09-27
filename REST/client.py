@@ -20,6 +20,10 @@ def RichiedidatiCittadino():
     jRequest = {"nome": nome , "cognome" : cognome, "data nascita": dataNascita,"codice fiscale" :codFiscale}
     return jRequest
 
+def RichiediDati():  
+    codFiscale = input("Inserisci codice fiscale ")
+    return codFiscale
+
 CreaInterfaccia()
 sOper = input ("\nSeleziona operazione ")
 while (sOper != "5"):
@@ -35,7 +39,23 @@ while (sOper != "5"):
 
         except:
             print("\nProblemi di comunicazione con il server.. \tRIPROVA PIU TARDI.")
-        
+ 
+    if sOper == "2":
+        api_url = base_url + "/richiedi_dati"
+        jsonData = RichiediDati()
+        try:
+            response = requests.post(api_url,json=jsonDataRequest)
+            print(response.status_code)
+            print(response.headers["Content-Type"])
+            data1 = response.json()
+            print(data1)
+
+        except:
+            print("\nProblemi di comunicazione con il server.. \tRIPROVA PIU TARDI.")
+
+
+
+
     CreaInterfaccia()
     sOper = input("\nSeleziona operazione ")
 

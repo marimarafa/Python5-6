@@ -15,9 +15,11 @@ def GestisciAddCittadino():
         print("Ricevuto " + sCodiceFiscale)
         #carichiamo l'anagrafe
         dAnagrafe = JsonDeserialize(sFileAnagrafe)
+        #controlla che il cittadino non è gia presente in anagrafe
         if sCodiceFiscale not in dAnagrafe:
             dAnagrafe[sCodiceFiscale] = jRequest
             JsonSerialize(dAnagrafe,sFileAnagrafe)
+            #rispondi
             jResponse = {"Error" : "000" , "Msg": "Ok"}
             return json.dumps(jResponse),200  #200 è il codice del http
         else:
@@ -25,9 +27,24 @@ def GestisciAddCittadino():
             return json.dumps(jResponse),200  
     else:
         return "Errore , formato non riconosciuto",401 
+    
+@api.route("/richiedi_dati",methods = ['POST'])
+def GestisciRichiestaDati():
+    content_type = request.headers.get('Content-Type')
+    jRequest = request.json
+    if content_type == "application/json":
+        sCodiceFiscale = jRequest["codice fiscale"]
+        dAnagrafe = JsonDeserialize(sFileAnagrafe)
+        if sCodiceFiscale in dAnagrafe:
+            return dAnagrafe[sCodiceFiscale] 
+        else:
+            jResponse = {"Error" : "001" , "Msg": "codice fiscale non trovato"}
+            return json.dumps(jResponse),200  
 
-    #controlla che il cittadino non è gia presente in anagrafe
-    #rispondi
+
+
+
+
 
 @api.route('/', methods = ['GET'])
 def manageget():
