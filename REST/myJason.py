@@ -1,7 +1,4 @@
 import json
-import jsonschema
-import requests
-import sys
 
 
 def JsonSerialize(data, sFile):
