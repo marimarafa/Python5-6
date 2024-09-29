@@ -20,7 +20,7 @@ def GestisciAddCittadino():
             dAnagrafe[sCodiceFiscale] = jRequest
             JsonSerialize(dAnagrafe,sFileAnagrafe)
             #rispondi
-            jResponse = {"Error" : "000" , "Msg": "Ok"}
+            jResponse = {"Error" : "000" , "Msg": "Cittadino aggiunto con successo"}
             return json.dumps(jResponse),200  #200 è il codice del http
         else:
             jResponse = {"Error" : "001" , "Msg": "codice fiscale già presente"}
@@ -30,11 +30,8 @@ def GestisciAddCittadino():
     
 @api.route("/richiedi_dati",methods = ['POST'])
 def GestisciRichiestaDati():
-
     content_type = request.headers.get('Content-Type')
-    
     if content_type == "application/json":
-
         jRequest = request.json
         sCodiceFiscale = jRequest["codice fiscale"]
         dAnagrafe = JsonDeserialize(sFileAnagrafe)
@@ -42,15 +39,62 @@ def GestisciRichiestaDati():
         if sCodiceFiscale in dAnagrafe:
             info =  dAnagrafe[sCodiceFiscale] 
         
-            jResponse = {"Error" : "000" , "Msg": "Ok", 'info': info}
+            jResponse = {"Error" : "000" , "Msg": "Operazioe terminata con successo", 'info': info}
             return json.dumps(jResponse),200  #200 è il codice del http
         else:
             jResponse = {"Error" : "001" , "Msg": "codice fiscale non trovato"}
             return json.dumps(jResponse),200  
+    else:
+        return "Errore, formato non riconosciuto", 401 
+        
+@api.route("/modifica_dati",methods = ['POST'])
+def GestisciModificaDati():
+    content_type = request.headers.get('Content-Type')
+    if content_type == "application/json":
+        jRequest = request.json
+        sCodiceFiscale = jRequest["codice fiscale"]
+        dAnagrafe = JsonDeserialize(sFileAnagrafe)
+        
+        if sCodiceFiscale in dAnagrafe:
+            info =  dAnagrafe[sCodiceFiscale] 
+        
+            if "nome" in jRequest:
+                info["nome"] = jRequest["nome"]
+            if "cognome" in jRequest:
+                info["cognome"] = jRequest["cognome"]
+            if "data nascita" in jRequest:
+                info["data nascita"] = jRequest["data nascita"]
+                
+            dAnagrafe[sCodiceFiscale] = info
+            JsonSerialize(dAnagrafe, sFileAnagrafe)
 
-
-
-
+            jResponse = {"Error": "000", "Msg": "Dati modificati con successo", 'info': info}
+            return json.dumps(jResponse), 200
+        else:
+            jResponse = {"Error": "001", "Msg": "codice fiscale non trovato"}
+            return json.dumps(jResponse), 200
+    else:
+        return "Errore, formato non riconosciuto", 401 
+    
+@api.route("/elimina_cittadino",methods = ['POST'])
+def GestireEliminazioneCittadino():
+    if content_type == "application/json":
+        content_type = request.headers.get('Content-Type')
+        jRequest = request.json
+        sCodiceFiscale = jRequest["codice fiscale"]
+        dAnagrafe = JsonDeserialize(sFileAnagrafe)
+        if sCodiceFiscale in dAnagrafe:
+            del dAnagrafe[sCodiceFiscale]
+            JsonSerialize(dAnagrafe, sFileAnagrafe)
+            jResponse = {"Error": "000", "Msg": "Cittadino eliminato con successo"}
+            return json.dumps(jResponse), 200
+        else:
+            jResponse = {"Error": "001", "Msg": "Codice fiscale non trovato"}
+            return json.dumps(jResponse), 200
+    else:
+        return "Errore, formato non riconosciuto", 401
+    
+    
 @api.route('/', methods = ['GET'])
 def manageget():
     return "Ciao a tutti"
