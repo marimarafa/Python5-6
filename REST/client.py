@@ -34,7 +34,7 @@ def ModificaDati():
     
 def EliminaCittadino():
     codFiscale = input("Inserisci il codice fiscale del cittadino da eliminare: ")
-    return codFiscale
+    return {"codice fiscale" :codFiscale}
     
     
 
@@ -67,6 +67,7 @@ while (sOper != "5"):
             print(info)
         except:
             print("\nProblemi di comunicazione con il server.. \tRIPROVA PIU TARDI.")
+
     if sOper == "3":
         api_url = base_url + "/modifica_dati"
         jsonDataRequest = ModificaDati()
@@ -78,6 +79,7 @@ while (sOper != "5"):
             print(data1)
         except:
             print("\nProblemi di comunicazione con il server.. \tRIPROVA PIU TARDI.")
+
     if sOper == "4":
         api_url = base_url + "/elimina_cittadino"
         jsonDataRequest = EliminaCittadino()
@@ -86,9 +88,7 @@ while (sOper != "5"):
             print(response.status_code)
             print(response.headers["Content-Type"])
             data1 = response.json()
-            info = data1.pop('info')
             print(data1)
-            print(info)
         except:
             print("\nProblemi di comunicazione con il server.. \tRIPROVA PIU TARDI.")
         
