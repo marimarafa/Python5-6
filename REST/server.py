@@ -77,7 +77,7 @@ def GestisciModificaDati():
             jResponse = {"Error": "001", "Msg": "codice fiscale non trovato"}
             return json.dumps(jResponse), 200
     
-    
+
 @api.route("/elimina_cittadino",methods = ['POST'])
 def GestireEliminazioneCittadino():
     content_type = request.headers.get('Content-Type')
