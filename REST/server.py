@@ -1,8 +1,14 @@
 from flask import Flask,json,request
+import requests
 from myJason import JsonSerialize,JsonDeserialize
 
 sFileAnagrafe = "./anagrafe.json"
 api = Flask(__name__)
+
+@api.route('/pippo', methods=['GET'])
+def GestisciPippo():
+    myresponse = requests.get("https://www.google.it")
+    return myresponse.text
 
 @api.route('/add_cittadino', methods = ['POST'])
 def GestisciAddCittadino():

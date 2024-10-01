@@ -57,6 +57,7 @@ while (sOper != "5"):
     if sOper == "2":
         api_url = base_url + "/richiedi_dati"
         jsonDataRequest = RichiediDati()
+        api_url += "/" + jsonDataRequest
         try:
             response = requests.post(api_url,json=jsonDataRequest)
             print(response.status_code)
