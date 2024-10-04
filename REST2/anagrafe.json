@@ -34,5 +34,11 @@
         "cognome": "asdadsads",
         "data nascita": "dsaadsads",
         "codice fiscale": "asddsa"
+    },
+    "a": {
+        "nome": "",
+        "cognome": "",
+        "dataNascita": "",
+        "codFiscale": "a"
     }
 }

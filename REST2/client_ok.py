@@ -68,7 +68,7 @@ while True:
         print("Richiesta dati cittadino")
         api_url = base_url + "/read_cittadino"
         jsonDataRequest = GetCodicefiscale()
-        EseguiOperazione(2,api_url + "/" + jsonDataRequest['codFiscale'])
+        EseguiOperazione(2,api_url + "/" + jsonDataRequest['codFiscale'],None)
         
 
     elif iOper == 3:
