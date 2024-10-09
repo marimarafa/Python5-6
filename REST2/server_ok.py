@@ -35,12 +35,11 @@ def Ha_privilegi_scrittura():
     
     if username in utenti:
         privilegi = utenti[username]["privilegi"]
+        password = utenti[username]["password"]
         if privilegi == "w":  # Controllo dei privilegi
-            return True, utenti[username]
+            return True, utenti[username],utenti[password]
         return False ,'Accesso negato. Privilegi insufficienti per eseguire questa operazione.'
     return None,'utente non trovato.'
-
-
 
 cittadini = JsonDeserialize(file_path)
 @api.route('/add_cittadino', methods=['POST'])
