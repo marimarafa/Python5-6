@@ -16,6 +16,12 @@
         "password": "gianni123",
         "privilegi" : "r" ,
         "note" : "operatore sportello frazione 2"
+    },
+
+    "a":{
+        "password": "a",
+        "privilegi" : "w" ,
+        "note" : "operatore sportello frazione "
     }
     
 

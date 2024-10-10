@@ -3,7 +3,7 @@
 import requests, json, sys
 
 
-base_url = "http://127.0.0.1:8080"
+base_url = "https://127.0.0.1:8080"
 
 
 def GetDatiCittadino():
@@ -27,13 +27,13 @@ def GetCodicefiscale():
 def EseguiOperazione(iOper,sServizio , dDatiToSend):
     try:
         if iOper == 1: #requests.post per aggiungere qualcosa 
-            response = requests.post(sServizio,json= dDatiToSend)
+            response = requests.post(sServizio,json= dDatiToSend,verify=False)
         if iOper == 2: #requests.get per stampare qualcosa 
-            response = requests.get(sServizio)
+            response = requests.get(sServizio,verify = False)
         if iOper == 3: #requests.put per le modifiche 
-            response = requests.put(sServizio,json= dDatiToSend)
+            response = requests.put(sServizio,json= dDatiToSend,verify=False)
         if iOper == 4: 
-            response = requests.delete(sServizio,json= dDatiToSend)
+            response = requests.delete(sServizio,json= dDatiToSend,verify = False)
         if response.status_code == 200:
             print(response.json())
         else:
@@ -51,7 +51,7 @@ def EffetuaprimoLogin():
     }
     try:
         api_url = base_url + "/login"
-        response = requests.post(api_url,json= dUser)
+        response = requests.post(api_url,json= dUser,verify=False)
 
         if response.status_code == 200:
             jsonResponse = response.json()
