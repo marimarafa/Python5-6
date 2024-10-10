@@ -18,9 +18,7 @@ VALUES
 ('dctnst34b56h501u', 'Mario', 'de martino', '1980-05-21'),
 ('dctnst34b56h501a', 'Gianni', 'de martino', '1980-05-21'),
 ('dctnst34b56h502w', 'Silvia', 'de martino', '1980-05-21'),
-('aaaaa', 'Paolo', 'Rossi', 'dctnst34b56h502w','1990-02-24')
-
-
+('dtnst34b56h502w','Paolo', 'Rossi','1990-02-24');
 
 
 INSERT INTO Utenti (username , password, privilegi, note)
