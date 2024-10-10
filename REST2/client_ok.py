@@ -54,12 +54,13 @@ def EffetuaprimoLogin():
         response = requests.post(api_url,json= dUser)
 
         if response.status_code == 200:
-            jsonResponse = response.json
+            jsonResponse = response.json()
             if jsonResponse["Esito"] == "000":
                 Privilegio = dUser["Privilegio"]
                 iPrimoLoginEffetuato = 1
     except:
         print("Attenzione , problemi di comunicazione con il server, Riprova piu tardi.")
+        iPrimoLoginEffetuato = 0
 
 print("Benvenuti al Comune - sede locale")
 iPrimoLoginEffetuato = 0
@@ -67,7 +68,7 @@ sUsername = ""
 sPassword = ""
 Privilegio = ""
 while iPrimoLoginEffetuato == 0:
-        iPrimoLoginEffetuato = EffetuaprimoLogin()
+        EffetuaprimoLogin()
     
    
 
