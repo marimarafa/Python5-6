@@ -46,7 +46,7 @@ def EffetuaprimoLogin():
     sUsername = input("Inserisci username: ")
     sPassword = input("Inserisci la password: ")
     dUser = {
-        "username " : sUsername ,
+        "username" : sUsername ,
         "password" : sPassword 
     }
     try:

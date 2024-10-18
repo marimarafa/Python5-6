@@ -1,5 +1,4 @@
 from flask import Flask, jsonify, request
-from myjson import JsonDeserialize, JsonSerialize
 import dbclient as db
 import sys
 
@@ -10,107 +9,99 @@ if cur is None:
 	print("Errore connessione al DB")
 	sys.exit()
 
-    
-file_path = "anagrafe.json"
-loginFile_path = "utenti.json"
-
-cittadini = JsonDeserialize(file_path)
-utenti = JsonDeserialize(loginFile_path)
 
 @api.route("/login" , methods = ["POST"])
 def GestisciLogin():
+    global cur 
     content_type = request.headers.get('Content-Type')
     if content_type == 'application/json':
         jsonReq = request.json
-
-# utenti [1chiave][2chiave]-> stampa il valore del valore (il primo valore è un dizionario)
-
+        print(jsonReq)
         username = jsonReq["username"]
-        password = utenti[username]["password"]
-        privilegi = utenti[username]["privilegi"]
+        password = jsonReq["password"]
 
-        if username in utenti and password == jsonReq["password"]:
-            return jsonify({"Esito": "000", "Msg": "Login effetuato con successo", "Privilegio":privilegi}), 200
+        sQuery = "select * from utenti where username =' " + username + "'" \
+        + "and password = '" + password + "';"
+        print(sQuery)
+
+        inumRow = db.read_in_db(cur , sQuery)
+        # read in db -> esegue la query -> restituisce il numero di righe
+        #  myrow = db.read_next_row(cur) -> per leggere  le righe
+
+        if inumRow == 1:
+            lRow = db.read_next_row(cur)
+            sPriv = lRow[1][2]
+
+            return jsonify({"Esito": "000", "Msg": "Login effetuato con successo","Privilegi:": sPriv}), 200
         else:
             return jsonify({"Esito": "001", "Msg": "Utente non trovato"}) , 200
     else:
         return jsonify({"Esito": "002", "Msg": "Formato richiesta non valido"}), 200
 
-# def Ha_privilegi_scrittura():
-#     jsonReq = request.json
-#     username = jsonReq.get('username')
-#     #login = GestisciLogin()
-    
-#     if username in utenti:
-#         privilegi = utenti[username]["privilegi"]
-#         password = utenti[username]["password"]
-#         if privilegi == "w":  # Controllo dei privilegi
-#             return True, utenti[username],utenti[password]
-#         return False ,'Accesso negato. Privilegi insufficienti per eseguire questa operazione.'
-#     return None,'utente non trovato.'
 
-cittadini = JsonDeserialize(file_path)
 @api.route('/add_cittadino', methods=['POST'])
 def GestisciAddCittadino():
-    # autorizzato ,utente = Ha_privilegi_scrittura()
-    # while autorizzato == True :
+    global cur
     content_type = request.headers.get('Content-Type')
     if content_type == 'application/json':
         jsonReq = request.json
+
         codice_fiscale = jsonReq.get('codFiscale')
-        if codice_fiscale in cittadini:
+        nome = jsonReq.get('nome')
+        cognome = jsonReq.get('cognome')
+        data_nascita = jsonReq.get('dataNascita')
+        
+        Squery ="'"+ codice_fiscale +"','" + nome + "','" + cognome +"','" + data_nascita + "'"
+        sQuery = "insert into cittadini (codice_fiscale, nome, cognome, data_nascita) VALUES (" + Squery + ")"
+        print(sQuery)
+        iRet = db.write_in_db(cur,sQuery)
+
+        if iRet == -2:
             return jsonify({"Esito": "001", "Msg": "Cittadino già esistente"}), 200
-        else:
-            cittadini[codice_fiscale] = jsonReq
-            JsonSerialize(cittadini, file_path) 
+        elif iRet == 0:
             return jsonify({"Esito": "000", "Msg": "Cittadino aggiunto con successo"}), 200
-    else:
-        return jsonify({"Esito": "002", "Msg": "Formato richiesta non valido"}), 200
+        else:
+            return jsonify({"Esito": "002", "Msg": "Formato richiesta non valido"}), 200
 
 # < argomento > è lo stesso argomento passato nella funzione
 @api.route('/read_cittadino/<codice_fiscale>', methods=['GET'])
 def read_cittadino(codice_fiscale): # parametro passsato nella url
-    # autorizzato ,utente = Ha_privilegi_scrittura()
-    # while autorizzato == True  or autorizzato == False:
-    cittadino = cittadini.get(codice_fiscale)
-    if cittadino:
-        return jsonify({"Esito": "000", "Msg": "Cittadino trovato", "Dati": cittadino}), 200
+    sQuery1 = "select * from cittadini where codice_fiscale =' " + codice_fiscale + "';"
+    iNumRow = db.read_in_db(cur,sQuery1)
+    if iNumRow == 1:
+        return jsonify({"Esito": "000", "Msg": "Cittadino trovato", "Dati":k}), 200
     else:
         return jsonify({"Esito": "001", "Msg": "Cittadino non trovato"}), 200
 
-@api.route('/update_cittadino', methods=['PUT'])
-def update_cittadino():
-    # autorizzato ,utente = Ha_privilegi_scrittura()
-    # while autorizzato == True :
-    content_type = request.headers.get('Content-Type')
-    if content_type == 'application/json':
-        jsonReq = request.json
-        codice_fiscale = jsonReq.get('codFiscale')
-        if codice_fiscale in cittadini:
-            cittadini[codice_fiscale] = jsonReq
-            JsonSerialize(cittadini, file_path)  
-            return jsonify({"Esito": "000", "Msg": "Cittadino aggiornato con successo"}), 200
-        else:
-            return jsonify({"Esito": "001", "Msg": "Cittadino non trovato"}), 200
-    else:
-        return jsonify({"Esito": "002", "Msg": "Formato richiesta non valido"}), 200
+# @api.route('/update_cittadino', methods=['PUT'])
+# def update_cittadino():
+#     content_type = request.headers.get('Content-Type')
+#     if content_type == 'application/json':
+#         jsonReq = request.json
+#         codice_fiscale = jsonReq.get('codFiscale')
+#         if codice_fiscale in cittadini:
+#             cittadini[codice_fiscale] = jsonReq
+#             JsonSerialize(cittadini, file_path)  
+#             return jsonify({"Esito": "000", "Msg": "Cittadino aggiornato con successo"}), 200
+#         else:
+#             return jsonify({"Esito": "001", "Msg": "Cittadino non trovato"}), 200
+#     else:
+#         return jsonify({"Esito": "002", "Msg": "Formato richiesta non valido"}), 200
 
 
-@api.route('/elimina_cittadino', methods=['DELETE'])
-def elimina_cittadino():
-    # autorizzato ,utente = Ha_privilegi_scrittura()
-    # while autorizzato == True :
-    content_type = request.headers.get('Content-Type')
-    if content_type == 'application/json':
-        cod = request.json.get('codFiscale')
-        if cod in cittadini:
-            del cittadini[cod]
-            JsonSerialize(cittadini, file_path)  
-            return jsonify({"Esito": "000", "Msg": "Cittadino rimosso con successo"}), 200
-        else:
-            return jsonify({"Esito": "001", "Msg": "Cittadino non trovato"}), 200
-    else:
-        return jsonify({"Esito": "002", "Msg": "Formato richiesta non valido"}), 200
+# @api.route('/elimina_cittadino', methods=['DELETE'])
+# def elimina_cittadino():
+#     content_type = request.headers.get('Content-Type')
+#     if content_type == 'application/json':
+#         cod = request.json.get('codFiscale')
+#         if cod in cittadini:
+#             del cittadini[cod]
+#             JsonSerialize(cittadini, file_path)  
+#             return jsonify({"Esito": "000", "Msg": "Cittadino rimosso con successo"}), 200
+#         else:
+#             return jsonify({"Esito": "001", "Msg": "Cittadino non trovato"}), 200
+#     else:
+#         return jsonify({"Esito": "002", "Msg": "Formato richiesta non valido"}), 200
 
 api.run(host="127.0.0.1", port=8080, ssl_context = "adhoc")
 
