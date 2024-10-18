@@ -4,7 +4,7 @@ import os.path
 import time
 
 #pip3 install psycopg2-binary
-import dbclient as db
+import REST_db.dbclient as db
 
 
 print("Inizio programma prova database")

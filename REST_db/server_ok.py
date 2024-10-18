@@ -1,13 +1,21 @@
 from flask import Flask, jsonify, request
+from myjson import JsonDeserialize, JsonSerialize
 import dbclient as db
+import sys
 
 api = Flask(__name__)
 
+cur = db.connect()
+if cur is None:
+	print("Errore connessione al DB")
+	sys.exit()
 
+    
 file_path = "anagrafe.json"
 loginFile_path = "utenti.json"
 
-cur = db.connect()
+cittadini = JsonDeserialize(file_path)
+utenti = JsonDeserialize(loginFile_path)
 
 @api.route("/login" , methods = ["POST"])
 def GestisciLogin():
@@ -18,7 +26,7 @@ def GestisciLogin():
 # utenti [1chiave][2chiave]-> stampa il valore del valore (il primo valore è un dizionario)
 
         username = jsonReq["username"]
-        password = cur[username]["password"]
+        password = utenti[username]["password"]
         privilegi = utenti[username]["privilegi"]
 
         if username in utenti and password == jsonReq["password"]:
