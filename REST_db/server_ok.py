@@ -99,19 +99,22 @@ def update_cittadino():
         return jsonify({"Esito": "002", "Msg": "Formato richiesta non valido"}), 200
 
 
-# @api.route('/elimina_cittadino', methods=['DELETE'])
-# def elimina_cittadino():
-#     content_type = request.headers.get('Content-Type')
-#     if content_type == 'application/json':
-#         cod = request.json.get('codFiscale')
-#         if cod in cittadini:
-#             del cittadini[cod]
-#             JsonSerialize(cittadini, file_path)  
-#             return jsonify({"Esito": "000", "Msg": "Cittadino rimosso con successo"}), 200
-#         else:
-#             return jsonify({"Esito": "001", "Msg": "Cittadino non trovato"}), 200
-#     else:
-#         return jsonify({"Esito": "002", "Msg": "Formato richiesta non valido"}), 200
+@api.route('/elimina_cittadino', methods=['DELETE'])
+def elimina_cittadino():
+    content_type = request.headers.get('Content-Type')
+    if content_type == 'application/json':
+        jsonReq = request.json
+        codice_fiscale = jsonReq.get('codFiscale')
+        sQuery = "DELETE FROM cittadini where codice_fiscale = '" + codice_fiscale + "';"
+        print(sQuery)
+        iRet = db.write_in_db(cur,sQuery)
+
+        if iRet == 0:
+            return jsonify({"Esito": "001", "Msg": "Cittadino eliminato con successo"}), 200
+        elif iRet == -2:
+            return jsonify({"Esito": "000", "Msg": "Cittadino non trovato"}), 200
+    else:
+        return jsonify({"Esito": "002", "Msg": "Formato richiesta non valido"}), 200
 
 api.run(host="127.0.0.1", port=8080, ssl_context = "adhoc")
 
