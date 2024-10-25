@@ -20,7 +20,6 @@ def config(filename='database.ini', section='postgresql'):
 
 conn = None
 
-
 def connect():
     """ Connect to the PostgreSQL database server """
     print('Connecting to the PostgreSQL database 0...')
