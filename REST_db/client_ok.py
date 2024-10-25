@@ -1,6 +1,10 @@
-
-
 import requests, json, sys
+
+import warnings
+from urllib3.exceptions import InsecureRequestWarning
+
+# Disabilita l'avviso solo per le richieste HTTPS non verificate
+warnings.simplefilter('ignore', InsecureRequestWarning)
 
 
 base_url = "https://127.0.0.1:8080"
@@ -56,8 +60,8 @@ def EffetuaprimoLogin():
         if response.status_code == 200:
             jsonResponse = response.json()
             if jsonResponse["Esito"] == "000":
-                Privilegio = dUser["Privilegio"]
-                iPrimoLoginEffetuato = 1
+                Privilegio = jsonResponse["Privilegi"]
+                return 1
     except:
         print("Attenzione , problemi di comunicazione con il server, Riprova piu tardi.")
         iPrimoLoginEffetuato = 0
@@ -68,7 +72,7 @@ sUsername = ""
 sPassword = ""
 Privilegio = ""
 while iPrimoLoginEffetuato == 0:
-        EffetuaprimoLogin()
+        iPrimoLoginEffetuato = EffetuaprimoLogin()
     
    
 

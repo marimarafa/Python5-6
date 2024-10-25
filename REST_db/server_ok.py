@@ -55,7 +55,7 @@ def GestisciAddCittadino():
         sQuery = "insert into cittadini (codice_fiscale, nome, cognome, data_nascita) VALUES (" + Squery + ")"
         print(sQuery)
         iRet = db.write_in_db(cur,sQuery)
-
+        
         if iRet == -2:
             return jsonify({"Esito": "001", "Msg": "Cittadino già esistente"}), 200
         elif iRet == 0:
@@ -66,10 +66,13 @@ def GestisciAddCittadino():
 # < argomento > è lo stesso argomento passato nella funzione
 @api.route('/read_cittadino/<codice_fiscale>', methods=['GET'])
 def read_cittadino(codice_fiscale): # parametro passsato nella url
-    sQuery1 = "select * from cittadini where codice_fiscale =' " + codice_fiscale + "';"
+    sQuery1 = "select * from cittadini where codice_fiscale ='" + codice_fiscale + "';"
     iNumRow = db.read_in_db(cur,sQuery1)
+    for _ in range(0,iNumRow):
+        myrow = db.read_next_row(cur)
+    print(myrow)
     if iNumRow == 1:
-        return jsonify({"Esito": "000", "Msg": "Cittadino trovato", "Dati":k}), 200
+        return jsonify({"Esito": "000", "Msg": "Cittadino trovato", "Dati":[myrow]}), 200
     else:
         return jsonify({"Esito": "001", "Msg": "Cittadino non trovato"}), 200
 
