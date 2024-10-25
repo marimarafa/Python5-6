@@ -76,20 +76,27 @@ def read_cittadino(codice_fiscale): # parametro passsato nella url
     else:
         return jsonify({"Esito": "001", "Msg": "Cittadino non trovato"}), 200
 
-# @api.route('/update_cittadino', methods=['PUT'])
-# def update_cittadino():
-#     content_type = request.headers.get('Content-Type')
-#     if content_type == 'application/json':
-#         jsonReq = request.json
-#         codice_fiscale = jsonReq.get('codFiscale')
-#         if codice_fiscale in cittadini:
-#             cittadini[codice_fiscale] = jsonReq
-#             JsonSerialize(cittadini, file_path)  
-#             return jsonify({"Esito": "000", "Msg": "Cittadino aggiornato con successo"}), 200
-#         else:
-#             return jsonify({"Esito": "001", "Msg": "Cittadino non trovato"}), 200
-#     else:
-#         return jsonify({"Esito": "002", "Msg": "Formato richiesta non valido"}), 200
+@api.route('/update_cittadino', methods=['PUT'])
+def update_cittadino():
+    content_type = request.headers.get('Content-Type')
+    if content_type == 'application/json':
+        jsonReq = request.json
+        codice_fiscale = jsonReq.get('codFiscale')
+        nome = jsonReq.get('nome')
+        cognome = jsonReq.get('cognome')
+        data_nascita = jsonReq.get('dataNascita')
+
+        Squery ="nome ='" + nome + "',cognome ='" + cognome +"',data_nascita='" + data_nascita + "'"
+        sQuery = "update cittadini set "+ Squery +"where codice_fiscale = '" + codice_fiscale + "';"
+        print(sQuery)
+        iRet = db.write_in_db(cur,sQuery)
+        
+        if iRet == 0:
+            return jsonify({"Esito": "001", "Msg": "Cittadino aggiornato con successo"}), 200
+        elif iRet == -2:
+            return jsonify({"Esito": "000", "Msg": "Cittadino non trovato"}), 200
+    else:
+        return jsonify({"Esito": "002", "Msg": "Formato richiesta non valido"}), 200
 
 
 # @api.route('/elimina_cittadino', methods=['DELETE'])
