@@ -1,4 +1,4 @@
-import requests, json, sys
+import requests, sys
 
 import warnings
 from urllib3.exceptions import InsecureRequestWarning
