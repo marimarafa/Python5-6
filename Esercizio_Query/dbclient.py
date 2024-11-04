@@ -42,21 +42,6 @@ def connect():
         print(error)
         return None
 
-def read_row():
-    try:
-        with conn.cursor() as cursor:
-            # Read data from database
-            sql = "SELECT * FROM `users`"
-            cursor.execute(sql)
-
-            # Fetch all rows
-            rows = cursor.fetchall()
-
-            # Print results
-            for row in rows:
-                print(row)
-    finally:
-        conn.close()
 
 def write_in_db(cur,sql_insert):
     global conn

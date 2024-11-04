@@ -69,7 +69,7 @@ def read_cittadino(codice_fiscale): # parametro passsato nella url
     sQuery1 = "select * from cittadini where codice_fiscale ='" + codice_fiscale + "';"
     iNumRow = db.read_in_db(cur,sQuery1)
     for _ in range(0,iNumRow):
-        myrow = db.read_row(cur)
+        myrow = db.read_next_row(cur)
     print(myrow)
     if iNumRow == 1:
         return jsonify({"Esito": "000", "Msg": "Cittadino trovato", "Dati":[myrow]}), 200
