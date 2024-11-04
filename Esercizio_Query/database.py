@@ -9,7 +9,7 @@ if cur is None:
      
 print("\tCollegamento al Database....\n")
 while True :
-    op = print("\nScegliere operazione da eseguire:\n1)Aggiungere Cittadino \n2)Cerca Cittadino \n3)Aggiorna Cittadino \n4)Elimina Cittadino ")
+    op = print("\nScegliere operazione da eseguire:\n1)Aggiungere utente \n2)Cerca utente \n3)Aggiorna utente \n4)Elimina utente ")
     query = input("--> ")
 
     if query == "1":
@@ -19,24 +19,24 @@ while True :
         data_nascita = input("Inserisci data_nascita: ")
 
         Squery ="'"+ codice_fiscale +"','" + nome + "','" + cognome +"','" + data_nascita + "'"
-        aggiungi_cittadino = "insert into cittadini (codice_fiscale, nome, cognome, data_nascita) VALUES (" + Squery + ")"
-        iRet = db.write_in_db(cur,aggiungi_cittadino)
+        aggiungi_utente = "insert into utente (codice_fiscale, nome, cognome, data_nascita) VALUES (" + Squery + ")"
+        iRet = db.write_in_db(cur,aggiungi_utente)
 
         if iRet == -2:
-            print("Cittadino già esistente")
+            print("Utente già esistente")
         elif iRet == 0:
-            print("Cittadino aggiunto con successo")
+            print("Utente aggiunto con successo")
 
     elif query == "2":
         codice_fiscale = input("Inserisci codice fiscale: ")
-        sQuery1 = "select * from cittadini where codice_fiscale ='" + codice_fiscale + "';"
+        sQuery1 = "select * from utente where codice_fiscale ='" + codice_fiscale + "';"
         iNumRow = db.read_in_db(cur,sQuery1)
         for _ in range(0,iNumRow):
             myrow = db.read_next_row(cur)
         if iNumRow == 1:
-            print("Cittadino trovato: ", myrow[1])
+            print("Utente trovato: ", myrow[1])
         elif iNumRow == 0:
-            print("Cittadino non trovato")
+            print("Utente non trovato")
 
     elif query == "3":
         codice_fiscale = input("Inserisci codice fiscale: ")
@@ -45,23 +45,23 @@ while True :
         data_nascita = input("Inserisci data_nascita: ")
 
         Squery ="nome ='" + nome + "',cognome ='" + cognome +"',data_nascita='" + data_nascita + "'"
-        aggiorna_cittadino = "update cittadini set "+ Squery +"where codice_fiscale = '" + codice_fiscale + "';"
-        iRet = db.write_in_db(cur,aggiorna_cittadino)
+        aggiorna_utente = "update utente set "+ Squery +"where codice_fiscale = '" + codice_fiscale + "';"
+        iRet = db.write_in_db(cur,aggiorna_utente)
 
         if iRet == -2:
-            print("Cittadino già esistente")
+            print("Utente già esistente")
         elif iRet == 0:
-            print("Cittadino aggiornato con successo")
+            print("Utente aggiornato con successo")
 
     elif query == "4":
         codice_fiscale = input("Inserisci codice fiscale: ")
-        elimina_cittadino = "DELETE FROM cittadini where codice_fiscale = '" + codice_fiscale + "';"
-        iRet = db.write_in_db(cur,elimina_cittadino)
+        elimina_utente = "DELETE FROM utente where codice_fiscale = '" + codice_fiscale + "';"
+        iRet = db.write_in_db(cur,elimina_utente)
 
         if iRet == -2:
-            print("Cittadino non trovato")
+            print("Utente non trovato")
         elif iRet == 0:
-            print("Cittadino eliminato con successo")
+            print("Utente eliminato con successo")
     else:
         sys.exit()
 
