@@ -25,7 +25,7 @@ def registra_new():
     else:
         nome = request.args.get('nome') + " DA GET"
         password = request.args.get('password') 
-    sResponsePage = "<html><body><h1>Buongiorno " + nome + " 12 novembre 2024</h1></body></html>"
+    
     dUser = {
         "username" : nome ,
         "password" : password 
@@ -34,15 +34,18 @@ def registra_new():
         api_url = base_url + "/login"
         response = requests.post(api_url,json= dUser,verify=False)
 
+
         if response.status_code == 200:
             jsonResponse = response.json()
             if jsonResponse["Esito"] == "000":
                 Privilegio = jsonResponse["Privilegi"]
-                return 1
+                sResponsePage = "<html><body><h1>Registrazionre effetuata con successo, Buongiorno " + nome + " </h1></body></html>"
+                return sResponsePage
     except:
         print("Attenzione , problemi di comunicazione con il server, Riprova piu tardi.")
-        iPrimoLoginEffetuato = 0
-        
+        sResponsePage = "<html><body><h1>Registrazione non effettuata .Riprovare </h1></body></html>"
+        return sResponsePage
+
    
 
 
