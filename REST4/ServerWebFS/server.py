@@ -2,20 +2,10 @@ from flask import Flask, render_template, request
 
 api = Flask(__name__)
 
-
-
-
 utenti = [['mario','password1','M','0'], 
           ['gianni','password2','M','0'], 
           ['AnitaGaribaldi', 'pass3','F','0'] 
           ]
-
-
-
-
-
-
-
 
 
 @api.route('/loggati', methods=['GET'])
@@ -24,9 +14,6 @@ def get_code():
     nome = "mario"
     sResponsePage = "<html><body><h1>Buongiorno" + nome + " a tutti, il 17 settembre 2024</h1></body></html>"
     return sResponsePage
-
-
-
 
 
 @api.route('/', methods=['GET'])
