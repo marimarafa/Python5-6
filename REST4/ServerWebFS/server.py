@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request
+import requests
 
 api = Flask(__name__)
+base_url = "https://127.0.0.1:8080"
 
 utenti = [['mario','password1','M','0'], 
           ['gianni','password2','M','0'], 
@@ -14,6 +16,33 @@ def get_code():
     nome = "mario"
     sResponsePage = "<html><body><h1>Buongiorno" + nome + " a tutti, il 17 settembre 2024</h1></body></html>"
     return sResponsePage
+
+@api.route('/registrati', methods=['GET','POST'])
+def registra_new():
+    if request.method == 'POST':
+       nome = request.form['nome'] + "DA POST"
+       password = request.form['password']
+    else:
+        nome = request.args.get('nome') + " DA GET"
+        password = request.args.get('password') 
+    dUser = {
+        "username" : nome ,
+        "password" : password 
+    }
+    try:
+        api_url = base_url + "/login"
+        response = requests.post(api_url,json= dUser,verify=False)
+
+        if response.status_code == 200:
+            jsonResponse = response.json()
+            if jsonResponse["Esito"] == "000":
+                Privilegio = jsonResponse["Privilegi"]
+                return 1
+    except:
+        print("Attenzione , problemi di comunicazione con il server, Riprova piu tardi.")
+        iPrimoLoginEffetuato = 0
+    sResponsePage = "<html><body><h1>Buongiorno " + nome + " 12 novembre 2024</h1></body></html>"
+    
 
 
 @api.route('/', methods=['GET'])
@@ -29,15 +58,11 @@ def regOk():
 def regKo():
     return render_template('reg_ko.html')
 
-@api.route('/registrati', methods=['GET'])
+@api.route('/registrati1', methods=['GET'])
 def registra():
-    #prendi i dati che ti ha inviato il server
-
-    #verifica la correttezza 
-
 
     nome = request.args.get("nome")
-    #print("Nome inserito:" + nome)
+    print("Nome inserito:" + nome)
     password = request.args.get("cognome")
 
     if request.args.get("sesso")=="1":
