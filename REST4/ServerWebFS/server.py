@@ -25,6 +25,7 @@ def registra_new():
     else:
         nome = request.args.get('nome') + " DA GET"
         password = request.args.get('password') 
+    sResponsePage = "<html><body><h1>Buongiorno " + nome + " 12 novembre 2024</h1></body></html>"
     dUser = {
         "username" : nome ,
         "password" : password 
@@ -41,8 +42,8 @@ def registra_new():
     except:
         print("Attenzione , problemi di comunicazione con il server, Riprova piu tardi.")
         iPrimoLoginEffetuato = 0
-    sResponsePage = "<html><body><h1>Buongiorno " + nome + " 12 novembre 2024</h1></body></html>"
-    
+        
+   
 
 
 @api.route('/', methods=['GET'])
