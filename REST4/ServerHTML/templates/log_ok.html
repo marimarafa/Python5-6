@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accesso riuscito</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+
+        /* Stile per il messaggio di accesso */
+        h1 {
+            text-align: center;
+            font-size: 36px;
+            color: #333;
+            margin-bottom: 40px;
+        }
+
+        /* Stile per i form contenenti i bottoni */
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px; /* Spazio tra i bottoni */
+            width: 100%;
+            max-width: 300px;
+        }
+
+        input[type="submit"] {
+            padding: 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 300px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Messaggio di successo centrato -->
+    <h1>ACCESSO RIUSCITO</h1>
+
+    <!-- Contenitore per i pulsanti -->
+    <div class="form-container">
+        <div class="button-container">
+            <!-- Primo pulsante per vedere ordini passati -->
+            <form action="/ordinipassati" method="get">
+                <input type="submit" value="VEDI ORDINI PASSATI">
+            </form>
+
+            <!-- Secondo pulsante per vedere ordini in corso -->
+            <form action="/ordiniincorso" method="get">
+                <input type="submit" value="VEDI ORDINI IN CORSO">
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

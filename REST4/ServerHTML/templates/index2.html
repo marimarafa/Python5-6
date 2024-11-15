@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accedi</title>
+    <title>Log in</title>
     <style>
         body, html {
             height: 100%;
@@ -63,21 +63,15 @@
 </head>
 <body>
     <div class="form-container">
-        <h1>EFFETUA LOGIN</h1>
-        <form action="/registrati" method="GET">
+        <h1>Accedi</h1>
+        <form action="/loggati" method="GET">
             <label for="nome"><b>Nome</b></label>
             <input type="text" placeholder="Inserisci nome" name="nome" id="nome" required><br>
 
             <label for="password"><b>Password</b></label>
             <input type="password" placeholder="Inserisci password" name="password" id="password" required><br>
-
-
-                <input type="submit" value="Registrati">
-            </form>
-            
-               
-
-        
+            <input type="submit" value="Log in">
+        </form>
     </div>
 </body>
 </html>

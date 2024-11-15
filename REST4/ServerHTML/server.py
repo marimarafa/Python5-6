@@ -23,6 +23,7 @@ def regko():
 
 @api.route('/login', methods=['GET'])
 def login():
+    
     return render_template("index2.html")
 
 # Modifica: accettare il metodo POST per il form

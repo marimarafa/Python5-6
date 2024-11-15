@@ -20,7 +20,7 @@ def GestisciLogin():
         username = jsonReq["username"]
         password = jsonReq["password"]
 
-        sQuery = "select * from utenti where username =' " + username + "'" \
+        sQuery = "select * from utenti where username ='" + username + "'" \
         + "and password = '" + password + "';"
         print(sQuery)
 
