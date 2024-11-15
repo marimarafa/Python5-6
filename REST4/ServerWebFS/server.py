@@ -39,7 +39,7 @@ def registra_new():
             jsonResponse = response.json()
             if jsonResponse["Esito"] == "000":
                 Privilegio = jsonResponse["Privilegi"]
-                sResponsePage = "<html><body><h1>Registrazionre effetuata con successo, Buongiorno " + nome + " </h1></body></html>"
+                sResponsePage = "<html><body><h1>Registrazione effetuata con successo, Buongiorno " + nome + " </h1></body></html>"
                 return sResponsePage
     except:
         print("Attenzione , problemi di comunicazione con il server, Riprova piu tardi.")
