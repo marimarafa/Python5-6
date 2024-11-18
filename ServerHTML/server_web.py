@@ -3,8 +3,6 @@ import requests
 
 api = Flask(__name__)
 base_url = "https://127.0.0.1:8080"
-# Lista utenti con nome, password, genere e altro
-utenti = [['mario', 'password01', 'Maschio', '0'], ['gianni', 'password02', 'Maschio', '0'], ['Anita', 'password03', 'Femmina', '0']]
 
 @api.route('/', methods=['GET'])
 def pagina1():
@@ -26,6 +24,10 @@ def regko():
 def login():
     return render_template("index2.html")
 
+@api.route('/aggCittadino', methods=['GET'])
+def agg_cittadino():
+    return render_template("aggiungi_cittadino.html")
+
 # Modifica: accettare il metodo POST per il form
 @api.route('/registrati', methods=['GET'])
 def registrati():
@@ -44,7 +46,6 @@ def registrati():
             if jsonResponse["Esito"] == "000":
                 print(111)
 
-                #Privilegio = jsonResponse["Privilegi"]
                 return render_template("reg_ok.html")
         return render_template("reg_ko.html")  
         
@@ -52,20 +53,83 @@ def registrati():
         print("Attenzione , problemi di comunicazione con il server, Riprova piu tardi.")
         return render_template("reg_ko.html")  
     
+@api.route('/addCittadino', methods=['GET'])
+def add_cittadino():
+    nome = request.args.get("nome")
+    cognome =  request.args.get("cognome")
+    dataN =  request.args.get("dataNascita")
+    codF =  request.args.get("codFiscale")
+    datiCittadino = {
+        "nome": nome, 
+        "cognome": cognome, 
+        "dataNascita": dataN, 
+        "codFiscale": codF
+    }
+    api_url = base_url + "/add_cittadino"
+    jsonDataRequest = datiCittadino
+    response = requests.post(api_url,jsonDataRequest,verify= False)
+    print(response.status_code)
+    if response.status_code == 200:
+            return"""<html>
+    <head>
+        <title>
+           Aggiunta Cittadino
+        </title>
+        <style>
+            body, html {
+                height: 100%;
+                margin: 0;
+                font-family: Arial, sans-serif;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                background-color: #f0f0f0;
+            }
+            h1 {
+                text-align: center;
+                font-size: 36px;
+                color: #333;
+                margin-bottom: 40px;
+            }
+            .button-container {
+                display: flex;
+                flex-direction: column;
+                gap: 15px; /* Spazio tra i bottoni */
+                width: 100%;
+                max-width: 300px;
+            }
+            input[type="submit"] {
+                padding: 15px;
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                font-size: 18px;
+                cursor: pointer;
+                width: 100%;
+            }
+            input[type="submit"]:hover {
+                background-color: #45a049;
+            }
+            .form-container {
+                width: 100%;
+                max-width: 300px;
+            }
+        </style>
+    </head>
+    <body>
+
+        <h1>CITTADINO AGGIUNTO CON SUCCESSO </h1>
+        <form action="/regok" method="get">
+            <input type="submit" value="Ritorna alla pagina principale ">
+        </form>
+    </body>
+</html>"""+ datiCittadino
+    else:
+        return render_template("reg_ko.html")
             
      
-
-@api.route('/loggati', methods=['GET'])
-def loggati():
-    nome = request.args.get("nome")
-    password = request.args.get("password")
-
-    for utente in utenti:
-        if utente[0]==nome and utente[1]==password and utente[3]=="1":
-            genere = utente[2]
-            return render_template('log_ok.html') # Accesso riuscito
-    return render_template('log_ko.html') #utente non registrato
-
 
 @api.route('/logok', methods=['GET'])
 def logok():

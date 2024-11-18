@@ -55,7 +55,7 @@ def GestisciAddCittadino():
         sQuery = "insert into cittadini (codice_fiscale, nome, cognome, data_nascita) VALUES (" + Squery + ")"
         print(sQuery)
         iRet = db.write_in_db(cur,sQuery)
-        
+        print(iRet)
         if iRet == -2:
             return jsonify({"Esito": "001", "Msg": "Cittadino già esistente"}), 200
         elif iRet == 0:
