@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Log in</title>
+    <title>Accedi</title>
     <style>
         body, html {
             height: 100%;
@@ -63,19 +63,15 @@
 </head>
 <body>
     <div class="form-container">
-        <h1><A>SCEGLI OPERAZIONE DA FARE</A></h1>
-        <form action="/aggCittadino" method="GET">
-                <input type="submit" value="1. Inserisci cittadino">
-        </form>
-        <form action="/leggiDati" method="GET"></form>
-            <input type="submit" value="2. Leggi dati cittadino">
-        </form >
-            <a href="/aggCittadino" target="_blank"></a>
-                <h2> 3. Aggiorna cittadino</h2>
-            </a>
-            <a href="/elimCittadino" target="_blank"></a>
-                <h2> 4. Elimina cittadino</h2>
-            </a>
+        <h1>LEGGI DATI  CITTADINO</h1>
+        <form action="/readCittadino" method="GET">
+
+            <label for="codFiscale"><b>Codice Fiscale</b></label>
+            <input type="codFiscale" placeholder="Inserisci il codice fiscale " name="codFiscale" id="codFiscale" required><br>
+
+                <input type="submit" value="Leggi dati cittadino">
+            </form>
+        
     </div>
 </body>
 </html>

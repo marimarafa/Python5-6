@@ -43,13 +43,15 @@ def GestisciLogin():
 def GestisciAddCittadino():
     global cur
     content_type = request.headers.get('Content-Type')
+    print(content_type)
     if content_type == 'application/json':
         jsonReq = request.json
-
-        codice_fiscale = jsonReq.get('codFiscale')
-        nome = jsonReq.get('nome')
-        cognome = jsonReq.get('cognome')
-        data_nascita = jsonReq.get('dataNascita')
+        print(jsonReq)
+        codice_fiscale = jsonReq["codFiscale"]
+        nome = jsonReq["nome"]
+        cognome = jsonReq["cognome"]
+        data_nascita = jsonReq["dataNascita"]
+        print(codice_fiscale,nome,cognome,data_nascita)
         
         Squery ="'"+ codice_fiscale +"','" + nome + "','" + cognome +"','" + data_nascita + "'"
         sQuery = "insert into cittadini (codice_fiscale, nome, cognome, data_nascita) VALUES (" + Squery + ")"
@@ -64,7 +66,7 @@ def GestisciAddCittadino():
             return jsonify({"Esito": "002", "Msg": "Formato richiesta non valido"}), 200
 
 # < argomento > è lo stesso argomento passato nella funzione
-@api.route('/read_cittadino/<codice_fiscale>', methods=['GET'])
+@api.route('/read_cittadino', methods=['GET'])
 def read_cittadino(codice_fiscale): # parametro passsato nella url
     sQuery1 = "select * from cittadini where codice_fiscale ='" + codice_fiscale + "';"
     iNumRow = db.read_in_db(cur,sQuery1)

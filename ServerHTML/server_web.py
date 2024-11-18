@@ -28,6 +28,10 @@ def login():
 def agg_cittadino():
     return render_template("aggiungi_cittadino.html")
 
+@api.route('/leggiDati', methods=['GET'])
+def leggi_dati():
+    return render_template("leggi_cittadino.html")
+
 # Modifica: accettare il metodo POST per il form
 @api.route('/registrati', methods=['GET'])
 def registrati():
@@ -44,7 +48,6 @@ def registrati():
             jsonResponse = response.json()
 
             if jsonResponse["Esito"] == "000":
-                print(111)
 
                 return render_template("reg_ok.html")
         return render_template("reg_ko.html")  
@@ -56,7 +59,7 @@ def registrati():
 @api.route('/addCittadino', methods=['GET'])
 def add_cittadino():
     nome = request.args.get("nome")
-    cognome =  request.args.get("cognome")
+    cognome = request.args.get("cognome")
     dataN =  request.args.get("dataNascita")
     codF =  request.args.get("codFiscale")
     datiCittadino = {
@@ -66,9 +69,7 @@ def add_cittadino():
         "codFiscale": codF
     }
     api_url = base_url + "/add_cittadino"
-    jsonDataRequest = datiCittadino
-    response = requests.post(api_url,jsonDataRequest,verify= False)
-    print(response.status_code)
+    response = requests.post(api_url,json = datiCittadino,verify= False)
     if response.status_code == 200:
             return"""<html>
     <head>
@@ -125,7 +126,75 @@ def add_cittadino():
             <input type="submit" value="Ritorna alla pagina principale ">
         </form>
     </body>
-</html>"""+ datiCittadino
+</html>"""
+    else:
+        return render_template("reg_ko.html")
+        
+@api.route('/readCittadino', methods=['GET'])
+def readCittadino():
+    codF =  request.args.get("codFiscale")
+    datiCittadino = {
+        "codFiscale": codF
+    }
+    api_url = base_url + "/read_cittadino"
+    print(api_url)
+    response = requests.post(api_url,json = datiCittadino,verify= False)
+    if response.status_code == 200:
+            return """<html>
+    <head>
+        <title>
+           Dati Cittadino
+        </title>
+        <style>
+            body, html {
+                height: 100%;
+                margin: 0;
+                font-family: Arial, sans-serif;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                background-color: #f0f0f0;
+            }
+            h1 {
+                text-align: center;
+                font-size: 36px;
+                color: #333;
+                margin-bottom: 40px;
+            }
+            .button-container {
+                display: flex;
+                flex-direction: column;
+                gap: 15px; /* Spazio tra i bottoni */
+                width: 100%;
+                max-width: 300px;
+            }
+            input[type="submit"] {
+                padding: 15px;
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                font-size: 18px;
+                cursor: pointer;
+                width: 100%;
+            }
+            input[type="submit"]:hover {
+                background-color: #45a049;
+            }
+            .form-container {
+                width: 100%;
+                max-width: 300px;
+            }
+        </style>
+    </head>
+    <body> """ + f"""
+        <h1>CITTADINO TROVATO -> {datiCittadino} </h1>
+        <form action="/regok" method="get">
+            <input type="submit" value="Ritorna alla pagina principale ">
+        </form>
+    </body>
+</html>"""
     else:
         return render_template("reg_ko.html")
             
